@@ -1,6 +1,5 @@
 ﻿using infrastructure.Entities;
 using Npgsql;
-using service.Services;
 
 namespace infrastructure.Repositories
 {

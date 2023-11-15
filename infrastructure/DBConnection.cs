@@ -1,7 +1,7 @@
 ﻿using System;
 using Npgsql;
 
-namespace service.Services
+namespace infrastructure
 {
     public class DBConnection
     {
