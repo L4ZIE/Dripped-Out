@@ -64,6 +64,8 @@ namespace Tests.RepoTesting
             Console.WriteLine($"User ID: {readUser.UserId}");
             Console.WriteLine($"User Email: {readUser.Email}");
             Console.WriteLine($"User Type: {readUser.IsAdmin}");
+            
+            
         }
     }
 }
