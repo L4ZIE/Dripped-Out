@@ -1,13 +1,33 @@
-﻿using service.Services;
+﻿using Microsoft.AspNetCore.Mvc;
+using service.Services;
 
 namespace api.Controllers;
 
-public class LoginController
+[ApiController]
+public class LoginController : ControllerBase
 {
     private readonly LoginService _loginService;
 
     public LoginController(LoginService loginService)
     {
         _loginService = loginService;
+    }
+
+    [HttpPost("/registeruser")]
+    public bool Register([FromBody] LoginDto loginDto)
+    {
+       return _loginService.Register(loginDto.Email, loginDto.Password);
+    }
+
+    [HttpPost("/loginuser")]
+    public bool Login([FromBody] LoginDto loginDto)
+    {
+        return _loginService.Login(loginDto.Email, loginDto.Password);
+    }
+
+    public class LoginDto
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }
