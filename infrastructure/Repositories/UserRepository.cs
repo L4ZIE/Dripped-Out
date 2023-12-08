@@ -97,7 +97,6 @@ namespace infrastructure.Repositories
                 }
             }
         }
-        
     }
 }
 

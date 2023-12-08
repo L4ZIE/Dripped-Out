@@ -8,6 +8,7 @@
         SizeMapperRepo,
         SizeTypeRepo,
         ColorTypeRepo,
-        UserProdRepo
+        UserProdRepo,
+        LoginRepo
     }
 }

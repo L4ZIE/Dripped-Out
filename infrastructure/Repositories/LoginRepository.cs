@@ -7,7 +7,7 @@ namespace infrastructure.Repositories
 {
     public class LoginRepository : ICrud<PasswordHash>
     {
-        public readonly IDBConnection _dbConnection;
+        private readonly IDBConnection _dbConnection;
 
         public LoginRepository(IDBConnection dbConnection)
         {

@@ -45,6 +45,9 @@ namespace infrastructure.Repositories.Factory
                     case RepoType.UserProdRepo:
                         repoInstance = new UserProdRepository(dbConnection);
                         break;
+                    case RepoType.LoginRepo:
+                        repoInstance = new LoginRepository(dbConnection);
+                        break;
                     default:
                         throw new ArgumentException("Invalid repository type");
                 }
