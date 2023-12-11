@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dapper;
 using infrastructure.DatabaseManager.Interface;
 using infrastructure.Entities;
 using infrastructure.Repositories.Interface;
@@ -7,7 +8,7 @@ namespace infrastructure.Repositories
 {
     public class ProductRepository : ICrud<Products>, IProductMapper
     {
-        public readonly IDBConnection _dbConnection;
+        private readonly IDBConnection _dbConnection;
 
         public ProductRepository(IDBConnection dbConnection)
         {
@@ -41,7 +42,7 @@ namespace infrastructure.Repositories
             {
                 con.Open();
 
-                const string sql = "SELECT * FROM Products WHERE productid = @productid";
+                const string sql = "SELECT * FROM product WHERE productid = @productid";
 
                 using (var command = new NpgsqlCommand(sql, con))
                 {
@@ -104,6 +105,20 @@ namespace infrastructure.Repositories
                     command.ExecuteNonQuery();
                 }
             }
+        }
+
+        public IEnumerable<Products> getAllProducts()
+        {
+            var sql = "SELECT * FROM product";
+            var allproducts = new List<Products>();
+            using (var con = _dbConnection.GetConnection())
+            {
+                con.Open();
+
+               return  con.Query<Products>(sql);
+            }
+
+            return null;
         }
 
         public List<Products> getProductbyType(int TypeId)

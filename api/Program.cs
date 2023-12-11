@@ -1,6 +1,10 @@
 using System.Text;
 using infrastructure.DatabaseManager;
+using infrastructure.DatabaseManager.Interface;
+using infrastructure.Entities;
 using infrastructure.Repositories;
+using infrastructure.Repositories.Factory;
+using infrastructure.Repositories.Interface;
 using service.Helpers;
 using service.Services;
 
@@ -10,10 +14,18 @@ var builder = WebApplication.CreateBuilder(args);
 string secret = "asdfasdfsa";//TODO RETRIEVE SECRET FROM CONFIG FILE OR USE ENV VARIABLE
 Byte[] secretBytes = Encoding.ASCII.GetBytes(secret);
 
-builder.Services.AddSingleton<DBConnection>();
+builder.Services.AddSingleton<IDBConnection, DBConnection>();
+builder.Services.AddSingleton<CRUDFactory>();
+builder.Services.AddSingleton<IProductMapper, ProductRepository>();
+builder.Services.AddSingleton<ICrud<Products>, ProductRepository>();
+
 builder.Services.AddSingleton<LoginRepository>();
+builder.Services.AddSingleton<UserRepository>();
+builder.Services.AddSingleton<ProductRepository>();
+
 builder.Services.AddSingleton<AuthenticationHelper>(new AuthenticationHelper(secretBytes));
 builder.Services.AddSingleton<LoginService>();
+builder.Services.AddSingleton<ProductService>();
 builder.Services.AddControllers();
 
 // Add services to the container.

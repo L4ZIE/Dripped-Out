@@ -8,7 +8,7 @@
 <div>
   <top-bar></top-bar>
 </div>
-<div class="content">
+<div class="content" *ngIf="product">
   <div class="img-container">
     <h1>Product Name</h1>
   <img src="assets/dripped-out-logo.png" class="main-image">
@@ -22,11 +22,9 @@
     </span>
   </div>
   <div class="details-container">
-    <label>Price:</label>
-    <label>Price</label>
-    <label>Price</label>
-    <label>Price</label>
-    <label>Price</label>
+    <label>Price: {{ product.price | currency}}</label>
+    <label>Gender {{ product.gender}}</label>
+    <label>Description: {{product.description}}</label>
   </div>
 </div>
 </body>

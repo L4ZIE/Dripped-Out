@@ -12,7 +12,7 @@ namespace infrastructure.DatabaseManager
 
         static DBConnection()
         {
-            const string envVarKeyName = "DB_CONNECTION_STRING";
+            const string envVarKeyName = "dbconnectionstring";
 
             var rawConnectionString = Environment.GetEnvironmentVariable(envVarKeyName);
             if (rawConnectionString == null)
