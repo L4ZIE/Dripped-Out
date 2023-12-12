@@ -25,6 +25,12 @@ public class LoginController : ControllerBase
         return _loginService.Login(loginDto.Email, loginDto.Password);
     }
 
+    [HttpPost("/updateuser")]
+    public void Update([FromBody] LoginDto loginDto)
+    {
+        _loginService.Update(loginDto.Email, loginDto.Password);
+    }
+
     public class LoginDto
     {
         public string Email { get; set; }
