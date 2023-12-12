@@ -114,11 +114,9 @@ namespace infrastructure.Repositories
             using (var con = _dbConnection.GetConnection())
             {
                 con.Open();
-
+  
                return  con.Query<Products>(sql);
             }
-
-            return null;
         }
 
         public List<Products> getProductbyType(int TypeId)
