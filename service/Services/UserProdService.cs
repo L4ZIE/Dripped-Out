@@ -22,19 +22,39 @@ public class UserProdService
         return _UserCartRepository.GetUserLikes(userId);
     }
 
-    public List<Products> GetUserCart(int userId)
+    public List<Products> GetUserCartProducts(int userId)
     {
-        return _UserCartRepository.GetUserCart(userId);
+        return _UserCartRepository.GetUserCartProducts(userId);
     }
 
-    public void AddProductToUserCart(int userId, int productId)
+    public List<UserCartItems> GetUserCartDetails(int userId)
     {
-        _UserCartRepository.AddProductToUserCart(userId, productId);
+        return _UserCartRepository.GetUserCartDetails(userId);
+    }
+
+    public void AddProductToUserCart(int userId, int productId, int colorId, int sizeId, int quantity)
+    {
+        _UserCartRepository.AddProductToUserCart(userId, productId, colorId, sizeId, quantity);
+    }
+
+    public void RemoveProductFromCart(int userId, int productId, int colorId, int sizeId, int quantity)
+    {
+        _UserCartRepository.RemoveProductFromCart(userId, productId, colorId, sizeId, quantity);
+    }
+
+    public void UpdateProductQuantity(int userId, int productId, int colorId, int sizeId, int quantity)
+    {
+        _UserCartRepository.UpdateProductQuantity(userId, productId, colorId, sizeId, quantity);
     }
 
     public void AddProductToUserLikes(int userId, int productId)
     {
         _UserCartRepository.AddProductToUserLikes(userId, productId);
+    }
+
+    public void RemoveProductFromLikes(int userId, int productId)
+    {
+        _UserCartRepository.RemoveProductFromLikes(userId, productId);
     }
 
 

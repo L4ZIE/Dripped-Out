@@ -20,10 +20,10 @@ namespace infrastructure.Repositories
                 con.Open();
                 
                 const string query =
-                    @"SELECT product.productid, product.productname, product.typeid, product.price FROM product
-INNER JOIN userlikes ul on product.productid = ul.productid
-INNER JOIN users u on ul.userid = u.userid
-WHERE u.userid = @userid";
+                    "SELECT product.productid, product.productname, product.typeid, product.price FROM product " +
+                    "INNER JOIN userlikes ul on product.productid = ul.productid " +
+                    "INNER JOIN users u on ul.userid = u.userid " +
+                    "WHERE u.userid = @userid";
 
                 using (var command = new NpgsqlCommand(query, con))
                 {
@@ -51,17 +51,17 @@ WHERE u.userid = @userid";
             }
         }
 
-        public List<Products> GetUserCart(int UserId)
+        public List<Products> GetUserCartProducts(int UserId)
         {
             using (var con =_dbConnection.GetConnection())
             {
                 con.Open();
-                
+        
                 const string query =
-                    @"SELECT product.productid, product.productname, product.typeid, product.price FROM product
-INNER JOIN userCart uc on product.productid = uc.productid
-INNER JOIN users u on uc.userid = u.userid
-WHERE u.userid = @userid";
+                    "SELECT p.productid, p.productname, p.typeid, p.price " +
+                    "FROM usercart u " +
+                    "JOIN product p ON u.productid = p.productid " +
+                    "WHERE u.userid = @userid";
 
                 using (var command = new NpgsqlCommand(query, con))
                 {
@@ -85,34 +85,121 @@ WHERE u.userid = @userid";
                         return products;
                     }
                 }
-                
             }
         }
 
-        public void AddProductToUserCart(int userId, int productId)
+        public List<UserCartItems> GetUserCartDetails(int userId)
         {
             using (var con = _dbConnection.GetConnection())
             {
                 con.Open();
-                const string query = "INSERT INTO usercart (UserId, ProductId) VALUES (@userid, @productid)";
 
-                using (var commmand = new NpgsqlCommand(query, con))
+                const string query =
+                    "SELECT uc.productid, uc.colorid, uc.sizeid, uc.quantity, p.productname, p.price " +
+                    "FROM usercart uc " +
+                    "JOIN product p ON uc.productid = p.productid " +
+                    "WHERE uc.userid = @userId";
+
+                using (var command = new NpgsqlCommand(query, con))
+                {
+                    command.Parameters.AddWithValue("@userId", userId);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        var userCartDetails = new List<UserCartItems>();
+
+                        while (reader.Read())
+                        {
+                            userCartDetails.Add(new UserCartItems
+                            {
+                                ProductId = reader.GetInt32(reader.GetOrdinal("ProductId")),
+                                ColorId = reader.GetInt32(reader.GetOrdinal("ColorId")),
+                                SizeId = reader.GetInt32(reader.GetOrdinal("SizeId")),
+                                Quantity = reader.GetInt32(reader.GetOrdinal("Quantity")),
+                                ProductName = reader.GetString(reader.GetOrdinal("ProductName")),
+                                Price = reader.GetDecimal(reader.GetOrdinal("Price"))
+                            });
+                        }
+
+                        return userCartDetails;
+                    }
+                }
+            }
+        }
+
+        public void AddProductToUserCart(int userId, int productId, int colorId, int sizeId, int quantity)
+        {
+            using (var con = _dbConnection.GetConnection())
+            {
+                con.Open();
+                const string sql = "INSERT INTO usercart (UserId, ProductId, colorId, sizeId, quantity) VALUES (@userId, @productId, @colorId, @sizeId, @quantity)";
+
+                using (var commmand = new NpgsqlCommand(sql, con))
                 {
                     commmand.Parameters.AddWithValue("@userId", userId);
-                    commmand.Parameters.AddWithValue("@productid", productId);
+                    commmand.Parameters.AddWithValue("@productId", productId);
+                    commmand.Parameters.AddWithValue("@colorId", colorId);
+                    commmand.Parameters.AddWithValue("@sizeId", sizeId);
+                    commmand.Parameters.AddWithValue("@quantity", quantity);
 
                     commmand.ExecuteNonQuery();
                 }
             }
         }
-        
+
+        public void RemoveProductFromCart(int userId, int productId, int colorId, int sizeId, int quantity)
+        {
+            using (var con = _dbConnection.GetConnection())
+            {
+                con.Open();
+                const string sql =
+                    "DELETE FROM usercart WHERE userid = @userId " +
+                    "AND productid = @productId " +
+                    "AND colorid = @colorId " +
+                    "AND sizeid = @sizeId";
+
+                using (var command = new NpgsqlCommand(sql, con))
+                {
+                    command.Parameters.AddWithValue("@userId", userId);
+                    command.Parameters.AddWithValue("@productId", productId);
+                    command.Parameters.AddWithValue("@colorId", colorId);
+                    command.Parameters.AddWithValue("@sizeId", sizeId);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void UpdateProductQuantity(int userId, int productId, int colorId, int sizeId, int quantity)
+        {
+            using (var con = _dbConnection.GetConnection())
+            {
+                con.Open();
+                const string sql =
+                    "UPDATE usercart SET quantity = @quantity " +
+                    "WHERE userid = @userId AND productid = @productId " +
+                    "AND colorid = @colorId AND sizeid = @sizeId";
+
+                using (var command = new NpgsqlCommand(sql, con))
+                {
+                    command.Parameters.AddWithValue("@userId", userId);
+                    command.Parameters.AddWithValue("@productId", productId);
+                    command.Parameters.AddWithValue("@colorId", colorId);
+                    command.Parameters.AddWithValue("@sizeId", sizeId);
+                    command.Parameters.AddWithValue("@quantity", quantity);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void AddProductToUserLikes(int userId, int productId)
         {
             using (var con = _dbConnection.GetConnection())
             {
                 con.Open();
 
-                const string query = "INSERT INTO UserLikes (UserId, ProductId) VALUES (@userId, @productId)";
+                const string query = "INSERT INTO userlikes (UserId, ProductId) VALUES (@userId, @productId)";
 
                 using (var command = new NpgsqlCommand(query, con))
                 {
@@ -122,6 +209,23 @@ WHERE u.userid = @userid";
                     command.ExecuteNonQuery();
                 }
             }
+        }
+        public void RemoveProductFromLikes(int userId, int productId)
+        {
+            using (var con = _dbConnection.GetConnection())
+            {
+                con.Open();
+
+                const string query = "DELETE FROM userlikes WHERE userid = @userId AND productid = @productId";
+
+                using (var command = new NpgsqlCommand(query, con))
+                {
+                    command.Parameters.AddWithValue("@userId", userId);
+                    command.Parameters.AddWithValue("@productId", productId);
+
+                    command.ExecuteNonQuery();
+                }
+            } 
         }
     }
 }
