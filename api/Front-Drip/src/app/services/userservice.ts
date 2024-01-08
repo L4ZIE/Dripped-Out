@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {firstValueFrom, Observable} from 'rxjs';
 import {Product, User, UserCartItems, UserLikesItem} from "../models";
 import {jwtDecode} from "jwt-decode";
-import {environment} from "../../environments/environment";
+import {environment} from "../../environments/environment.prod";
 
 @Injectable({
   providedIn: 'root'

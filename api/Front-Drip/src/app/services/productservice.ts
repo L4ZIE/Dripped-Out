@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {firstValueFrom, Observable, Subject} from 'rxjs';
 import {Product, ProductImageDto, ProductImageFile, ProductSize} from "../models";
-import {environment} from "../../environments/environment";
+import {environment} from "../../environments/environment.prod";
 
 @Injectable({
   providedIn: 'root'

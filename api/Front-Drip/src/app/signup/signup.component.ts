@@ -1,7 +1,7 @@
 import {Component, inject} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {environment} from "../../environments/environment";
+import {environment} from "../../environments/environment.prod";
 
 @Component({
   selector: 'signup',

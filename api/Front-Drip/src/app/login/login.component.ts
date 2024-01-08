@@ -2,6 +2,7 @@ import {Component, inject} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {UserService} from "../services/userservice";
+import {environment} from "../../environments/environment.prod";
 
 @Component({
   selector: 'login',
@@ -28,7 +29,7 @@ export class LoginComponent{
     const email = this.formGroup.get('email')?.value;
     const password = this.formGroup.get('password')?.value;
 
-    const response = await fetch('http://localhost:5027/loginuser', {
+    const response = await fetch(environment.baseUrl+'/loginuser', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

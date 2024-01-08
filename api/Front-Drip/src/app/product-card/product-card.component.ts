@@ -5,6 +5,7 @@ import {Product, ProductImageDto, ProductImageFile} from "../models";
 import {ProductService} from "../services/productservice";
 import {firstValueFrom} from "rxjs";
 import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment.prod";
 
 @Component({
   selector: 'product-card',
@@ -36,7 +37,7 @@ export class ProductCardComponent implements OnInit{
     let productImageDto: ProductImageDto[] = [];
 
     //gets list of imageDtos which hold the blob uri to get image file
-    const imageDtoCall = this.http.get<ProductImageDto[]>('http://localhost:5027/api/product-image-get-all?productId=' + productId);
+    const imageDtoCall = this.http.get<ProductImageDto[]>(environment.baseUrl+'/api/product-image-get-all?productId=' + productId);
     const imageDtoResult = await firstValueFrom<ProductImageDto[]>(imageDtoCall);
 
     productImageDto = imageDtoResult;
@@ -48,7 +49,7 @@ export class ProductCardComponent implements OnInit{
 
     //uses list of imageDtos to get images from blob storage and create productImageFiles
     for (let i = 0; i<productImageDto.length; i++){
-      const imageFileCall = this.http.get('http://localhost:5027/getimage?blobUri=' + productImageDto[i].blobUrl, { responseType: 'blob' });
+      const imageFileCall = this.http.get(environment.baseUrl +'/getimage?blobUri=' + productImageDto[i].blobUrl, { responseType: 'blob' });
       const imageBlobResult = await firstValueFrom<Blob>(imageFileCall);
 
       let productImageFile: ProductImageFile = {
