@@ -1,4 +1,5 @@
-﻿using infrastructure.DatabaseManager.Interface;
+﻿using Dapper;
+using infrastructure.DatabaseManager.Interface;
 using infrastructure.Entities;
 using infrastructure.Repositories.Interface;
 using Npgsql;
@@ -8,107 +9,62 @@ namespace infrastructure.Repositories
     public class UserRepository : ICrud<Users>
     {
         private readonly IDBConnection _dbConnection;
+        private string schema = "";
         
         public UserRepository(IDBConnection dbConnection)
         {
             _dbConnection = dbConnection;
+            if (Environment.GetEnvironmentVariable("IsTestMode")=="true")
+            {
+                schema = "tests.";
+            }
+            else
+            {
+                schema = "public.";
+            }
         }
         
         public Users Create(Users user)
         {
+            var sql = $@"INSERT INTO "+ schema + "Users(email, isadmin) VALUES (@email, @isadmin) RETURNING *";
+
             using (var con = _dbConnection.GetConnection())
             {
                 con.Open();
 
-                const string sql = "INSERT INTO Users(email, isadmin) VALUES (@email, @isadmin)";
-
-                using (var command = new NpgsqlCommand(sql, con))
-                {
-
-                    command.Parameters.AddWithValue("@email", user.Email);
-                    command.Parameters.AddWithValue("@isadmin", user.IsAdmin);
-                    command.ExecuteNonQuery();
-                    using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new Users
-                            {
-                                UserId = reader.GetInt32(reader.GetOrdinal("userid")),
-                                Email = reader.GetString(reader.GetOrdinal("email")),
-                                IsAdmin = reader.GetBoolean(reader.GetOrdinal("isadmin"))
-                            };
-                        }
-                    }
-                }
+                return con.QueryFirst<Users>(sql, new { email = user.Email, isadmin = user.IsAdmin});
             }
-
-            return null;
         }
 
         public Users Read(int userId)
         {
-            
+            var sql = $@"SELECT * FROM "+ schema +"Users WHERE UserId = @UserId";
             using (var con = _dbConnection.GetConnection())
             {
-             con.Open();
-
-             const string sql = "SELECT * FROM Users WHERE UserId = @UserId";
-
-             using (var command = new NpgsqlCommand(sql,con))
-             {
-                 command.Parameters.AddWithValue("@UserId", userId);
-
-                 using (var reader = command.ExecuteReader())
-                 {
-                     if (reader.Read())
-                     {
-                         return new Users
-                         {
-                             UserId = reader.GetInt32(reader.GetOrdinal("userid")),
-                             Email = reader.GetString(reader.GetOrdinal("email")),
-                             IsAdmin = reader.GetBoolean(reader.GetOrdinal("isadmin"))
-                         };
-                     }
-                 }
-             }
-             
+                con.Open();
+                return con.QueryFirst<Users>(sql, new { UserId = userId});
             }
-
-            return null;
         }
 
         public void Update(Users user)
         {
+            var sql = $@"UPDATE " + schema + "Users SET email = @Email, isadmin = @IsAdmin WHERE userId = @UserId";
+
             using (var con = _dbConnection.GetConnection())
             {
                 con.Open();
-
-                const string sql = "UPDATE Users SET email = @Email, isadmin = @IsAdmin WHERE userId = @UserId";
-
-                using (var command = new NpgsqlCommand(sql, con))
-                {
-                    command.Parameters.AddWithValue("@UserId", user.UserId);
-                    command.Parameters.AddWithValue("@Email", user.Email);
-                    command.Parameters.AddWithValue("@IsAdmin", user.IsAdmin);
-                    command.ExecuteNonQuery();
-                }
+                con.Execute(sql, new { Email = user.Email, IsAdmin = user.IsAdmin, UserId = user.UserId });
             }
         }
 
         public void Delete(int userId)
         {
+            var sql = $@"DELETE FROM "+ schema +"Users WHERE userid = @UserId";
+            
             using (var con = _dbConnection.GetConnection())
             {
                 con.Open();
-
-                const string sql = "DELETE FROM Users WHERE userId = @UserId";
-
-                using (var command = new NpgsqlCommand(sql, con))
-                {
-                    command.Parameters.AddWithValue("@UserId", userId);
-                    command.ExecuteNonQuery();
-                }
+                con.Execute(sql, new { UserId = userId });
             }
         }
         

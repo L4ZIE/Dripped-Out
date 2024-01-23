@@ -1,4 +1,5 @@
-﻿using infrastructure.DatabaseManager.Interface;
+﻿using Dapper;
+using infrastructure.DatabaseManager.Interface;
 using Npgsql;
 
 namespace infrastructure.DatabaseManager
@@ -37,6 +38,31 @@ namespace infrastructure.DatabaseManager
         public NpgsqlConnection GetConnection()
         {
             return new NpgsqlConnection(ProperlyFormattedConnectionString);
+        }
+
+        public void TriggerRebuild()
+        {
+            var sql = "DROP SCHEMA IF EXISTS tests CASCADE; " +
+                      "CREATE SCHEMA tests; " +
+                      "CREATE TABLE tests.users (" +
+                      "userid serial PRIMARY KEY, " +
+                      "email text, " +
+                      "isadmin boolean); " +
+                      "CREATE TABLE tests.colortype (" +
+                      "colorid serial Primary Key, " +
+                      "color text); " +
+                      "INSERT INTO tests.users(email, isadmin) VALUES ('test1@dapper.com', false); " +
+                      "INSERT INTO tests.users(email, isadmin) VALUES ('test2@dapper.com', false); " +
+                      "INSERT INTO tests.users(email, isadmin) VALUES ('test3@dapper.com', true); " +
+                      "INSERT INTO tests.colortype(color) VALUES ('Black'); " +
+                      "INSERT INTO tests.colortype(color) VALUES ('White'); " +
+                      "INSERT INTO tests.colortype(color) VALUES ('Blue'); ";
+
+            using (var conn = this.GetConnection())
+            {
+                conn.Open();
+                conn.Execute(sql);
+            }
         }
     }
 }

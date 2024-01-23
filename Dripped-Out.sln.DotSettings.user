@@ -8,13 +8,20 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6cac14a2_002D7523_002D47ca_002D8b9f_002D9589ee31ea6f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;TestProject&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="C:\Users\abual\OneDrive\Skrivebord\Dripped-Out\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a32205ef_002Dc955_002D4e3e_002Dae0c_002Df45ed8af4432/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;TestProject&amp;gt; #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\abual\OneDrive\Skrivebord\Dripped-Out\TestProject" Presentation="&amp;lt;TestProject&amp;gt;" /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=dc41ece4_002Da729_002D479a_002Da3be_002D5ef740b64cd0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestReadUser #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a32205ef_002Dc955_002D4e3e_002Dae0c_002Df45ed8af4432/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;TestProject&amp;gt; #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::EBF041B9-CF55-4884-96A7-B5C5E51191FF::net8.0::TestProject.RepoTesting.UserTest.TestReadUser&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::EBF041B9-CF55-4884-96A7-B5C5E51191FF::net8.0::TestProject.RepoTesting.ColorTypeTests+UserTest.CreateColorType&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=dc41ece4_002Da729_002D479a_002Da3be_002D5ef740b64cd0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestReadUser #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::EBF041B9-CF55-4884-96A7-B5C5E51191FF::net8.0::TestProject.RepoTesting.UserTest.TestReadUser&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::EBF041B9-CF55-4884-96A7-B5C5E51191FF::net8.0::TestProject.RepoTesting.ColorTypeTests+UserTest.CreateColorType&lt;/TestId&gt;&#xD;
+      &lt;TestId&gt;NUnit3x::EBF041B9-CF55-4884-96A7-B5C5E51191FF::net8.0::TestProject.RepoTesting.ColorTypeTests+UserTest.ReadColorType&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+    &lt;ProjectFile&gt;EBF041B9-CF55-4884-96A7-B5C5E51191FF/d:RepoTesting/f:UserTest.cs&lt;/ProjectFile&gt;&#xD;
+  &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/EnvironmentVariablesIndexed/=dbconnectionstring/@EntryIndexedValue">postgres://yypujlqw:sbbTlhMEV9fbqXAybnzH6igX7P77-KxM@flora.db.elephantsql.com/yypujlqw</s:String>
 	<s:Boolean x:Key="/Default/Housekeeping/UnitTestingMru/UnitTestRunner/EnvironmentVariablesIndexed/=DOTNET_005FENVIRONMENT/@EntryIndexRemoved">True</s:Boolean>
